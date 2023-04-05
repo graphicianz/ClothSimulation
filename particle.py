@@ -31,56 +31,41 @@ class particle(object):
         elif spring.spring_type=="flexion":
             self.flexion_springs.append(spring)
             
-#        if spring_type=="structural":
-#            self.structural_springs.append([particle,rest_len])
-#        elif spring_type=="shear":
-#            self.shear_springs.append([particle,rest_len])
-#        elif spring_type=="flexion":
-#            self.flexion_springs.append([particle,rest_len])
-            
     def getAllSprings(self):
         return self.structural_springs + self.shear_springs + self.flexion_springs
         
-#    def update_spring(self, ball, k, rest_len, kd, gravity):
-#        u = self.pos - ball.pos
-#        d = u.length() - rest_len
-#        un = u.normalize()
-#        f_gravity = ((ball.mass+self.mass)/2) * vec3(gravity)
-#        
-#        #deltaV = self.vel-ball.vel
-#        #damperF = sum(p*q for p,q in zip(un, deltaV))
-#        #damperF *= kd
-#        #damperF = un * 
-#        #damper = kd * ball.vel
-#        deltaV = self.vel-ball.vel
-#        damper = kd * ball.vel
-#        F = -k * d * un + f_gravity + damper
-##        print("===")
-##        print("u : {0}".format(u))
-##        print("d : {0}".format(d))
-##        print("un: {0}".format(un))
-##        print("F : {0}".format(F))
-##        print("F_gravity : {0}".format(f_gravity))
-##        print("===")
-#        #sys.exit()
-#        self.F = F
-#        ball.F = -F
+    def update_spring(self, ball, k, rest_len, kd, gravity):
+        u = self.pos - ball.pos
+        d = u.length() - rest_len
+        un = u.normalize()
+        f_gravity = ((ball.mass+self.mass)/2) * vec3(gravity)
         
-#    def update_location(self, dt):
-#        
-#        if not self.pin:
-#            self = NumericalIntegration(self.nt, self, dt)
-#        
-#        #Semi-Implicit Euler Integration
-#        #self.accel = self.F / self.mass
-#        #self.vel += self.accel * dt
-#        #self.pos += self.vel * dt
-#        
-#    def update_location2(self, dt):
-#        #Verlet Integration
-#        self.accel = self.F / self.mass
-#        temp = self.pos
-#        self.pos = self.pos + self.pos - self.prev_pos + (self.accel * pow(dt,2)) 
-#        self.prev_pos = temp
-#        
-#        self.vel += self.accel * dt
+        #deltaV = self.vel-ball.vel
+        #damperF = sum(p*q for p,q in zip(un, deltaV))
+        #damperF *= kd
+        #damperF = un * 
+        #damper = kd * ball.vel
+        deltaV = self.vel-ball.vel
+        damper = kd * ball.vel
+        F = -k * d * un + f_gravity + damper
+        self.F = F
+        ball.F = -F
+        
+    def update_location(self, dt):
+        
+        if not self.pin:
+            self = NumericalIntegration(self.nt, self, dt)
+        
+        #Semi-Implicit Euler Integration
+        #self.accel = self.F / self.mass
+        #self.vel += self.accel * dt
+        #self.pos += self.vel * dt
+       
+    def update_location2(self, dt):
+        #Verlet Integration
+        self.accel = self.F / self.mass
+        temp = self.pos
+        self.pos = self.pos + self.pos - self.prev_pos + (self.accel * pow(dt,2)) 
+        self.prev_pos = temp
+        
+        self.vel += self.accel * dt
